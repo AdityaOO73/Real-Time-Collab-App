@@ -128,7 +128,7 @@ npm run dev
 
 ## 🌍 Live Demo
 
-* 🔗 Frontend: 
+* 🔗 Frontend: https://realtimedo.netlify.app/
 * 🔗 Backend: https://real-time-collab-app.onrender.com
 
 ---
