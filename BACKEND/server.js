@@ -12,14 +12,25 @@ import Document from "./models/Document.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // testing
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.use("/api/docs", docRoutes);
 app.use("/api/auth", authRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"));
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
+
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 const server = http.createServer(app);
 
@@ -56,7 +67,7 @@ io.on("connection", (socket) => {
       const isOwner = doc.owner.toString() === userId;
 
       const collaborator = doc.collaborators.find(
-        (c) => c.user.toString() === userId
+        (c) => c.user.toString() === userId,
       );
 
       //  BLOCK UNAUTHORIZED
@@ -72,7 +83,6 @@ io.on("connection", (socket) => {
         user,
         socketId: socket.id,
       });
-
     } catch (err) {
       console.log("Socket auth error:", err.message);
     }
@@ -108,13 +118,13 @@ io.on("connection", (socket) => {
   });
 
   //  TITLE SYNC
-socket.on("title-change", ({ docId, title }) => {
-  socket.to(docId).emit("receive-title", title);
+  socket.on("title-change", ({ docId, title }) => {
+    socket.to(docId).emit("receive-title", title);
+  });
 });
-});
 
+const PORT = process.env.PORT || 5000;
 
-
-server.listen(5000, () => {
-  console.log("Server running on 5000");
+server.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });
