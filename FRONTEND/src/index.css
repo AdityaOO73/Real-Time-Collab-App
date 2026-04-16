@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #7C3AED;   /* Purple */
+  --secondary: #A78BFA; /* Light Purple */
+  --bg: #FFFFFF;       /* White background */
+  --text: #111827;     /* Dark text */
+  --card: #d0d3d6d4;     /* Light card */
+  --gradient-primary: linear-gradient(135deg, #7C3AED, #A78BFA);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.ProseMirror {
+  min-height: 70vh;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #111827;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror p.is-empty::before {
+  content: "Start writing...";
+  color: #9ca3af;
+  pointer-events: none;
+}
